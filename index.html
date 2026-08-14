@@ -1,0 +1,55 @@
+<div id="parker-portal-frame">
+<iframe
+id="parker-portal-app"
+title="Parker Golf portal"
+allow="clipboard-write"
+referrerpolicy="no-referrer"
+></iframe>
+</div>
+
+<style>
+#parker-portal-frame {
+position: fixed;
+inset: 0;
+z-index: 99999;
+width: 100%;
+height: 100%;
+height: 100dvh;
+overflow: hidden;
+background: #f4f4f1;
+}
+
+#parker-portal-app {
+display: block;
+width: 100%;
+height: 100%;
+border: 0;
+background: #f4f4f1;
+}
+</style>
+
+<script>
+(() => {
+const APPS_SCRIPT_EXEC_URL =
+'https://script.google.com/macros/s/AKfycbxT5AYDMSwkbW3l1DAm2ey-uDUHjVOM4i5UOrKDpSBIdv2P3-vpiIsmWPktQLvrYPn3Fw/exec';
+
+const frame = document.getElementById('parker-portal-app');
+
+function openParkerPortal() {
+const pageParameters = new URLSearchParams(window.location.search);
+const isAdmin = pageParameters.get('view') === 'admin';
+const appQuery = isAdmin ? '?view=admin' : '';
+const accessHash = window.location.hash || '';
+
+frame.src = APPS_SCRIPT_EXEC_URL + appQuery + accessHash;
+frame.title = isAdmin
+? 'Parker Golf administration'
+: 'Parker Golf client portal';
+}
+
+openParkerPortal();
+
+window.addEventListener('hashchange', openParkerPortal);
+window.addEventListener('popstate', openParkerPortal);
+})();
+</script>
